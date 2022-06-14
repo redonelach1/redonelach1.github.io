@@ -16,6 +16,7 @@ function endGame()
         var ele = document.getElementById(i.toString());
         ele.style.cursor = "default";
     }
+    return;
 }
 
 var playerMove = async function()
@@ -30,6 +31,10 @@ var playerMove = async function()
     else if (!moveMade)
     {
         ele.innerHTML = 'X';
+        if ( checkWin() )
+        {
+            return;
+        }
         moveMade = true;
     }
     if (moveMade)
@@ -50,9 +55,13 @@ var playerMove = async function()
         await sleep(300);
         //sleep
         ele.innerHTML = 'O';
+        if (checkWin())
+        {
+            return;
+        }
         moveMade = false;
     }
-    setInterval(checkWin(),10);
+
 };
 
 for (var i = 0; i < elements.length; i++) {
@@ -62,13 +71,14 @@ function checkWin()
 {
     var count = 0;
     var status = document.getElementById("status");
-    var isWin = false;
     for (var i = 0; i < 9; i++)
     {
         var ele = document.getElementById(i.toString());
         if (ele.innerHTML != "")
         {
             count++;
+            console.log("count:");
+            console.log(count);
         }
     }
 
@@ -89,16 +99,16 @@ function checkWin()
                 {
                     status.innerHTML = "Computer Wins B)";
                 }
-                    var isWin = true;
                 endGame();
+                return true;
             }
     }
-    console.log(isWin);
-    console.log(count);
-    if ( (count == 8) && (isWin == false) )
+
+    if (count == 9)
     {
         status.innerHTML = "Draw";
         endGame();
+        return true;
     }
 }
 
